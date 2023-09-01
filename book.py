@@ -21,7 +21,7 @@ def book(operation, id, isbn, name, release, genre):
         add_book(isbn=isbn, name=name, release=release, genre=genre)
     else: 
         if id is None:
-            print("Please provied id to a book which you want to delete. For more info use -h or --help.")
+            print("Please provide id to a book which you want to delete. For more info use -h or --help.")
         else:
             if operation == operations.DELETE:
                 delete_book(id)
@@ -32,7 +32,6 @@ def list_books():
     response = requests.get(urls.BOOK_URL)
     print(response.text)
 
-#TODO: Fix message when book with given ID does not exist
 def list_book_by_id(id):
     response = requests.get(f"{urls.BOOK_URL}/{id}")
     print(response.text)
