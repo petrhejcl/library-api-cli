@@ -4,8 +4,12 @@ import json
 
 from setup import operations, urls
 
+LIST_BOOKS = "list_books"
+LIBRARY_SPECIFIC_OPERATIONS = [LIST_BOOKS]
+LIBRARY_OPERATIONS = operations.BASIC_OPERATIONS + LIBRARY_SPECIFIC_OPERATIONS
+
 @click.command()
-@click.argument("operation", type=click.Choice(operations.BASIC_OPERATIONS), required=1)
+@click.argument("operation", type=click.Choice(LIBRARY_OPERATIONS), required=1)
 @click.option("-id", "--id", type=click.INT)
 @click.option("-n", "--name", type=click.STRING)
 @click.option("-c", "--city", type=click.STRING)
@@ -22,12 +26,14 @@ def library(operation, id, name, city, street, street_number, description):
         add_library(name=name, city=city, street=street, street_number=street_number, description=description)
     else: 
         if id is None:
-            print("Please provide id to a library which you want to delete. For more info use -h or --help.")
+            print("Please provide id to a library which you want to take action with. For more info use -h or --help.")
         else:
             if operation == operations.DELETE:
                 delete_library(id)
             elif operation == operations.UPDATE:
                 update_library(id=id, name=name, city=city, street=street, street_number=street_number, description=description)
+            elif operation == LIST_BOOKS:
+                list_books_by_library(id)
 
 def list_libraries():
     response = requests.get(urls.LIBRARY_URL)
@@ -63,4 +69,8 @@ def update_library(id, name=None, city=None, street=None, street_number=None, de
         "description" : description
     }
     response = requests.put(f"{urls.UPDATE_LIBRARY_URL}/{id}", headers=headers, data=json.dumps(data))
+    print(response.text)
+
+def list_books_by_library(id):
+    response = requests.get(f"{urls.BOOKS_BY_LIBRARY_URL}/{id}")
     print(response.text)

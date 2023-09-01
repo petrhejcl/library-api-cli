@@ -4,8 +4,12 @@ import json
 
 from setup import operations, urls
 
+LIST_BOOKS = "list_books"
+AUTHOR_SPECIFIC_OPERATIONS = [LIST_BOOKS]
+AUTHOR_OPERATIONS = operations.BASIC_OPERATIONS + AUTHOR_SPECIFIC_OPERATIONS
+
 @click.command()
-@click.argument("operation", type=click.Choice(operations.BASIC_OPERATIONS), required=1)
+@click.argument("operation", type=click.Choice(AUTHOR_OPERATIONS), required=1)
 @click.option("-id", "--id", type=click.INT)
 @click.option("-n", "--name", type=click.STRING)
 @click.option("-s", "--surname", type=click.STRING)
@@ -26,6 +30,8 @@ def author(operation, id, name, surname, birth):
                 delete_author(id)
             elif operation == operations.UPDATE:
                 update_author(id=id, name=name, surname=surname, birth=birth)
+            elif operation == LIST_BOOKS:
+                list_books_by_author(id)
 
 def list_authors():
     response = requests.get(urls.AUTHOR_URL)
@@ -57,4 +63,8 @@ def update_author(id, name=None, surname=None, birth=None):
         "yearOfBirth": birth
     }
     response = requests.put(f"{urls.UPDATE_AUTHOR_URL}/{id}", headers=headers, data=json.dumps(data))
+    print(response.text)
+
+def list_books_by_author(id):
+    response = requests.get(f"{urls.BOOKS_BY_AUTHOR_URL}/{id}")
     print(response.text)

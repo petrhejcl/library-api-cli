@@ -4,8 +4,13 @@ import json
 
 from setup import operations, urls
 
+LIST_AUTHORS = "list_authors"
+LIST_LIBRARIES = "list_libraries"
+BOOK_SPECIFIC_OPERATIONS = [LIST_AUTHORS, LIST_LIBRARIES]
+BOOK_OPERATIONS = operations.BASIC_OPERATIONS + BOOK_SPECIFIC_OPERATIONS
+
 @click.command()
-@click.argument("operation", type=click.Choice(operations.BASIC_OPERATIONS), required=1)
+@click.argument("operation", type=click.Choice(BOOK_OPERATIONS), required=1)
 @click.option("-id", "--id", type=click.INT)
 @click.option("-isbn", "--isbn", type=click.STRING)
 @click.option("-n", "--name", type=click.STRING)
@@ -27,6 +32,10 @@ def book(operation, id, isbn, name, release, genre):
                 delete_book(id)
             elif operation == operations.UPDATE:
                 update_book(id=id, isbn=isbn, name=name, release=release, genre=genre)
+            elif operation == LIST_AUTHORS:
+                list_authors_by_book(id)
+            elif operation == LIST_LIBRARIES:
+                list_libraries_by_book(id)
 
 def list_books():
     response = requests.get(urls.BOOK_URL)
@@ -61,3 +70,12 @@ def update_book(id, isbn=None, name=None, release=None, genre=None):
     }
     response = requests.put(f"{urls.UPDATE_BOOK_URL}/{id}", headers=headers, data=json.dumps(data))
     print(response.text)
+
+def list_libraries_by_book(id):
+    response = requests.get(f"{urls.LIBRARIES_BY_BOOK_URL}/{id}")
+    print(response.text)
+
+def list_authors_by_book(id):
+    response = requests.get(f"{urls.AUTHORS_BY_BOOK_URL}/{id}")
+    print(response.text)
+
