@@ -46,7 +46,7 @@ def add_author(name=None, surname=None, birth=None):
     print(response.text)
 
 def delete_author(id):
-    response = requests.delete(f"{urls.DELETE_AUTHRO_URL}/{id}")
+    response = requests.delete(f"{urls.DELETE_AUTHOR_URL}/{id}")
     print(response.text)
 
 def update_author(id, name=None, surname=None, birth=None):
