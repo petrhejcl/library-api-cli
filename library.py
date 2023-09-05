@@ -2,11 +2,30 @@ import click
 import requests
 import json
 
-from setup import operations, urls
+from utils import operations, urls, validation, printing
 
 LIST_BOOKS = "list_books"
 LIBRARY_SPECIFIC_OPERATIONS = [LIST_BOOKS]
 LIBRARY_OPERATIONS = operations.BASIC_OPERATIONS + LIBRARY_SPECIFIC_OPERATIONS
+
+#Columns as recieved in JSON
+ID = "id"
+NAME = "name"
+CITY = "city"
+STREET = "street"
+STREET_NUMBER = "streetNumber"
+DESCRIPTION = "description"
+
+COLUMNS = [ID, NAME, CITY, STREET, STREET_NUMBER, DESCRIPTION]
+
+#Key is name of colummn as recieved in JSON, value is 
+#title of column to be printed 
+COLUMNS_ALIASES = {ID : "ID", 
+           NAME : "Name",
+           CITY : "City",
+           STREET : "Street",
+           STREET_NUMBER : "Street Number",
+           DESCRIPTION : "Description"}
 
 @click.command()
 @click.argument("operation", type=click.Choice(LIBRARY_OPERATIONS), required=1)
@@ -36,8 +55,12 @@ def library(operation, id, name, city, street, street_number, description):
                 list_books_by_library(id)
 
 def list_libraries():
-    response = requests.get(urls.LIBRARY_URL)
-    print(response.text)
+    response = requests.get(urls.AUTHOR_URL)
+    if validation.response_status_code_is_2xx(response.status_code):
+        data = response.json()
+        columns_lengths = printing.get_max_columns_lengths(data, COLUMNS, COLUMNS_ALIASES)
+        printing.print_item_list(data, COLUMNS, COLUMNS_ALIASES, columns_lengths)
+    return response
 
 def list_library_by_id(id):
     response = requests.get(f"{urls.LIBRARY_URL}/{id}")

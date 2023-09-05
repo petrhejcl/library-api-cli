@@ -9,11 +9,15 @@ from library import library
 #Fix formatting to listing
 #Create authorship endpoint mapping
 #Create ownership endpoint mapping
+#Add option to recieve raw json response (listing etc.)
 #Fix message when item with given ID does not exist (finding, deleting, updating)
 #Fix message when adding a new item
 #Fix message when deleting an item
 #Fix message when updating an item
+#Add error handling and appropriate responding to status codes
+#Create (especially error) message constants
 #Create tests
+#Add return values to functions?
 
 
 @click.group

@@ -1,0 +1,6 @@
+NOT_SUCCESSFUL="Something went wrong. Recieved code "
+AUTHOR_ADDED="Author succesfully added"
+AUTHOR_DELETED="Author succesfully deleted"
+AUTHOR_UPDATED="Author succesfully updated"
+AUTHOR_NOT_FOUND="Author with given id was not found"
+AUTHOR_WITHOUT_BOOKS="There are no books for author with given id"

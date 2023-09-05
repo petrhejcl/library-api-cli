@@ -2,12 +2,29 @@ import click
 import requests
 import json
 
-from setup import operations, urls
+from utils import operations, urls
 
 LIST_AUTHORS = "list_authors"
 LIST_LIBRARIES = "list_libraries"
 BOOK_SPECIFIC_OPERATIONS = [LIST_AUTHORS, LIST_LIBRARIES]
 BOOK_OPERATIONS = operations.BASIC_OPERATIONS + BOOK_SPECIFIC_OPERATIONS
+
+#Columns as recieved in JSON
+ID = "id"
+ISBN = "isbn"
+TITLE = "title"
+YEAR_OF_RELEASE = "yearOfRelease"
+GENRE = "genre"
+
+COLUMNS = [ID, ISBN, TITLE, YEAR_OF_RELEASE, GENRE]
+
+#Key is name of colummn as recieved in JSON, value is 
+#title of column to be printed 
+COLUMNS_ALIASES = {ID : "ID", 
+           ISBN : "ISBN", 
+           TITLE : "Title", 
+           YEAR_OF_RELEASE: "Year Of Release",
+           GENRE : "Genre"}
 
 @click.command()
 @click.argument("operation", type=click.Choice(BOOK_OPERATIONS), required=1)
