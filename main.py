@@ -6,6 +6,8 @@ from library import library
 
 #TODO: 
 #Create nice help menu
+#Remove default error messages
+#Regactor basic operations of each entity to use general functions
 #Fix formatting to listing
 #Create authorship endpoint mapping
 #Create ownership endpoint mapping

@@ -67,3 +67,5 @@ def delete(url, columns, columns_aliases, success_message, not_found_message, ge
     else:
         print(general_error_message)
     return response
+
+BASIC_OPERATIONS = [list_all, ]
